@@ -1,0 +1,37 @@
+<scxml
+    xmlns="http://www.w3.org/2005/07/scxml"
+    xmlns:qt="http://theqtcompany.com/scxml/2015/06/"
+    version="1.0"
+    name="StopWatch"
+    initial="reset"
+>
+<state id="reset">
+    <onentry>
+        <log expr="reset..."/>
+    </onentry>
+    <transition event="start_click" target="timing"/>
+</state>
+
+<state id="timing" initial="run">
+    <onentry>
+        <log expr="timing..."/>
+    </onentry>
+
+    <state id="stop">
+        <onentry>
+            <log expr="stop..."/>
+        </onentry>
+        <transition event="start_click" target="run"/>
+    </state>
+
+    <state id="run">
+        <onentry>
+            <log expr="run..."/>
+        </onentry>
+        <transition event="start_click" target="stop"/>
+    </state>
+
+    <transition event="reset_click" target="reset"/>
+</state>
+
+</scxml>

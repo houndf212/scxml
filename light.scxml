@@ -1,0 +1,59 @@
+<scxml
+    xmlns="http://www.w3.org/2005/07/scxml"
+    xmlns:qt="http://theqtcompany.com/scxml/2015/06/"
+    version="1.0"
+    name="TrafficLight"
+    initial="working"
+>
+<state id="working" initial="red">
+    <onentry>
+        <log expr="working..."/>
+    </onentry>
+    <state id="green">
+        <onentry>
+            <log expr="enter green"/>
+            <send event="goyellow" delay="3s"/>
+        </onentry>
+        <transition event="goyellow" target="yellow"/>
+    </state>
+
+    <state id="yellow">
+        <onentry>
+            <log expr="enter yellow"/>
+            <send event="gored" delay="2s"/>
+        </onentry>
+        <transition event="gored" target="red"/>
+    </state>
+
+    <state id="red">
+        <onentry>
+            <log expr="enter red"/>
+            <send event="gogreen" delay="3s"/>
+        </onentry>
+        <transition event="gogreen" target="green"/>
+    </state>
+    <transition event="smash" target="broken"/>
+</state>
+
+<state id="broken">
+    <onentry>
+        <log expr="broken..."/>
+    </onentry>
+
+    <state id="blinking">
+        <onentry>
+            <send event="unblink" delay="500ms"/>
+        </onentry>
+        <transition event="unblink" target="unblinking"/>
+    </state>
+
+    <state id="unblinking">
+        <onentry>
+            <send event="blink" delay="500ms"/>
+        </onentry>
+        <transition event="blink" target="blinking"/>
+    </state>
+    <transition event="repair" target="working"/>
+</state>
+
+</scxml>
