@@ -13,8 +13,7 @@ TrafficWidget::TrafficWidget(QScxmlStateMachine *m, QWidget *parent)
     LightWidget *yellow = new LightWidget(Qt::yellow);
     LightWidget *green = new LightWidget(Qt::green);
 
-    QPushButton *btn = new QPushButton("Working");
-    btn->setCheckable(true);
+    btn = new QPushButton("Broken");
 
     m_machine->connectToState("red", red, &LightWidget::switchLight);
     m_machine->connectToState("green", green, &LightWidget::switchLight);
@@ -22,12 +21,7 @@ TrafficWidget::TrafficWidget(QScxmlStateMachine *m, QWidget *parent)
     m_machine->connectToState("yellow", green, &LightWidget::switchLight);
     m_machine->connectToState("blinking", yellow, &LightWidget::switchLight);
 
-    connect(btn, &QPushButton::clicked,
-                     [this, btn](bool b)
-    {
-        btn->setText(b ? "Broken" : "Wroking");
-        m_machine->submitEvent(b ? "smash" : "repair");
-    });
+    connect(btn, &QPushButton::clicked, this, &TrafficWidget::onBtnClicked);
 
     vbox->addWidget(red);
     vbox->addWidget(yellow);
@@ -35,4 +29,19 @@ TrafficWidget::TrafficWidget(QScxmlStateMachine *m, QWidget *parent)
     vbox->addWidget(btn);
     m_machine->setParent(this);
     m_machine->start();
+}
+
+void TrafficWidget::onBtnClicked()
+{
+    if (m_machine->isActive("working"))
+    {
+        btn->setText("Working");
+        m_machine->submitEvent("smash");
+    }
+    else
+    {
+        btn->setText("Broken");
+        m_machine->submitEvent("repair");
+    }
+    qDebug() << m_machine->activeStateNames(false);
 }

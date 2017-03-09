@@ -22,12 +22,6 @@ QScxmlStateMachine *init_traffic()
 
 QScxmlStateMachine *init_stopwatch()
 {
-
-    int dd = 12;
-    char b = dd;
-    qDebug() << b ;
-
-
     QScxmlStateMachine *machine = QScxmlStateMachine::fromFile(":/stopwatch.scxml");
     if (!machine->parseErrors().isEmpty())
     {
@@ -47,8 +41,9 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-//    TrafficWidget w(init_traffic());
-//    w.show();
+    TrafficWidget w(init_traffic());
+    w.show();
+
     StopWatchWidget stopwatch(init_stopwatch());
     stopwatch.show();
 
